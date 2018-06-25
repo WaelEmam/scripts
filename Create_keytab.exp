@@ -1,0 +1,58 @@
+#!/usr/bin/expect
+
+######################## CREATE KEYTAB SCRIPT ############################
+#									 									                                     #
+#									 							                                    		 #
+# This Script requires THREE variables to be passed from command line    #
+#                                                                        #
+# USER_ID, Password, REALM							 						                     #
+#                                                                        #
+# Example:								 								                               #
+#                                                                        #
+#./create_keytab.exp USER_ID password REALM123			 			               #
+##########################################################################
+
+set timeout 20
+
+set id [lindex $argv 0]
+
+set password [lindex $argv 1]
+
+set REALM [lindex $argv 2]
+
+spawn ktutil
+
+send -- "addent -password -p $id@$REALM -k 1 -e aes256-cts\r"
+expect -exact "addent -password -p $id@$REALM -k 1 -e aes256-cts\r
+Password for $id@$REALM: "
+send -- "$password\r"
+expect -exact "\r
+ktutil:  "
+send -- "addent -password -p $id@$REALM -k 1 -e aes128-cts\r"
+expect -exact "addent -password -p $id@$REALM -k 1 -e aes128-cts\r
+Password for $id@$REALM: "
+send -- "$password\r"
+expect -exact "\r
+ktutil:  "
+send -- "addent -password -p $id@$REALM -k 1 -e arcfour-hmac\r"
+expect -exact "addent -password -p $id@$REALM -k 1 -e arcfour-hmac\r
+Password for $id@$REALM: "
+send -- "$password\r"
+expect -exact "\r
+ktutil:  "
+send -- "addent -password -p $id@$REALM -k 1 -e des-cbc-md5\r"
+expect -exact "addent -password -p $id@$REALM -k 1 -e des-cbc-md5\r
+Password for $id@$REALM: "
+send -- "$password\r"
+expect -exact "\r
+ktutil:  "
+send -- "addent -password -p $id@$REALM -k 1 -e des3-cbc-sha1 \r"
+expect -exact "addent -password -p $id@$REALM -k 1 -e des3-cbc-sha1 \r
+Password for $id@$REALM: "
+send -- "$password\r"
+expect -exact "\r
+ktutil:  "
+send -- "wkt $id.keytab\r"
+expect -exact "wkt keytab_name.keytab\r
+ktutil:  "
+send -- "quit\r"
