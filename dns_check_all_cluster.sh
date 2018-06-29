@@ -4,18 +4,9 @@ DATE=`date +%Y-%m-%d.%H:%M:%S`
 file="watch.out"
 AMBARI_USER=admin
 AMBARI_PASSWD=admin
-AMBARI_HOST=wemam-lab-1.wael.hortonworks.com
-CLUSER_NAME=wemam_lab
+AMBARI_HOST=<ambari_host>
+CLUSER_NAME=<cluster_name>
 
-#usage(){
-#        echo "Usage: ./trace.sh <Host FQDN>"
-#        exit 1
-#}
-
-#if [ $# -eq 0 ]
-#  then
-#    usage
-#fi
 
 
 if [ -f "$file" ]
