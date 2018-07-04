@@ -5,10 +5,10 @@ file="watch.out"
 
 read  -p "Ambari Host:  " AMBARI_HOST
 read -p "Port:  " PORT
+read  -p "Cluster Name:  " CLUSER_NAME
 read  -p "Ambari User:  " AMBARI_USER
 echo "Ambari User Password:"
 read -s AMBARI_PASSWD
-read  -p "Cluster Name:  " CLUSER_NAME
 
 if [ -f "$file" ]
 then
