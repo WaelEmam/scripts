@@ -10,6 +10,7 @@
 # Example:								 								                               #
 #                                                                        #
 #./create_keytab.exp USER_ID password REALM123			 			               #
+# Required EXPECT package to be installed                                #
 ##########################################################################
 
 set timeout 20
