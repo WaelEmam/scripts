@@ -16,18 +16,12 @@ if [ $# -eq 0 ]
     usage
 fi
 
-#read  -p "Ambari Host:  " AMBARI_HOST
-#read -p "Port:  " PORT
-#read  -p "Ambari User:  " AMBARI_USER
-#echo "Ambari User Password:"
-#read -s AMBARI_PASSWD
-#read  -p "Cluster Name:  " CLUSER_NAME
-
-AMBARI_HOST=172.25.36.13
-PORT=8080
-AMBARI_USER=admin
-AMBARI_PASSWD=wemam
-CLUSTER_NAME=c1150
+read  -p "Ambari Host:  " AMBARI_HOST
+read -p "Port:  " PORT
+read  -p "Ambari User:  " AMBARI_USER
+echo "Ambari User Password:"
+read -s AMBARI_PASSWD
+read  -p "Cluster Name:  " CLUSER_NAME
 
 # Variable Declarations
 JAVA_HOME=$1
@@ -36,13 +30,13 @@ LOG_DIR=/tmp/HWX_RANGER_LOGS
 SCRIPT_LOG="$LOG_DIR/ranger_heap_dumps.log"
 
 # Gather Ranger configs
-tag_ver=$(curl -u admin:wemam -H 'X-Requested-By: ambari' -X GET "http://172.25.36.13:8080/api/v1/clusters/c1150/configurations?type=ranger-env" | grep tag |tail -1 | awk -F: '{print $2}'| awk -F\" '{print $2}')
+tag_ver=$(curl -u $AMBARI_HOST:$AMBARI_PASSWD -H 'X-Requested-By: ambari' -X GET "http://$AMBARI_HOST:$PORT/api/v1/clusters/$CLUSER_NAME/configurations?type=ranger-env" | grep tag |tail -1 | awk -F: '{print $2}'| awk -F\" '{print $2}')
 
-range_admin_log_dir=$(curl -u admin:wemam -H 'X-Requested-By: ambari' -X GET "http://172.25.36.13:8080/api/v1/clusters/c1150/configurations?type=ranger-env&tag=$tag_ver"| grep ranger_admin_log_dir| awk -F : '{print $2}'| awk -F\, '{print $1}'| awk -F\" '{print $2}')
+range_admin_log_dir=$(curl -u $AMBARI_HOST:$AMBARI_PASSWD -H 'X-Requested-By: ambari' -X GET "http://$AMBARI_HOST:$PORT/api/v1/clusters/$CLUSER_NAME/configurations?type=ranger-env&tag=$tag_ver"| grep ranger_admin_log_dir| awk -F : '{print $2}'| awk -F\, '{print $1}'| awk -F\" '{print $2}')
 
-ranger_usersync_log_dir=$(curl -u admin:wemam -H 'X-Requested-By: ambari' -X GET "http://172.25.36.13:8080/api/v1/clusters/c1150/configurations?type=ranger-env&tag=$tag_ver"| grep ranger_usersync_log_dir| awk -F : '{print $2}'| awk -F\, '{print $1}'| awk -F\" '{print $2}')
+ranger_usersync_log_dir=$(curl -u $AMBARI_HOST:$AMBARI_PASSWD -H 'X-Requested-By: ambari' -X GET "http://$AMBARI_HOST:$PORT/api/v1/clusters/$CLUSER_NAME/configurations?type=ranger-env&tag=$tag_ver"| grep ranger_usersync_log_dir| awk -F : '{print $2}'| awk -F\, '{print $1}'| awk -F\" '{print $2}')
 
-ranger_pid_dir=$(curl -u admin:wemam -H 'X-Requested-By: ambari' -X GET "http://172.25.36.13:8080/api/v1/clusters/c1150/configurations?type=ranger-env&tag=$tag_ver"| grep ranger_pid_dir | awk -F : '{print $2}'| awk -F\, '{print $1}'| awk -F\" '{print $2}')
+ranger_pid_dir=$(curl -u $AMBARI_HOST:$AMBARI_PASSWD -H 'X-Requested-By: ambari' -X GET "http://$AMBARI_HOST:$PORT/api/v1/clusters/$CLUSER_NAME/configurations?type=ranger-env&tag=$tag_ver"| grep ranger_pid_dir | awk -F : '{print $2}'| awk -F\, '{print $1}'| awk -F\" '{print $2}')
 
 ranger_admin_pid=$(cat $ranger_pid_dir/rangeradmin.pid)
 
