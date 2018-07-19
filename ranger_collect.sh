@@ -66,8 +66,15 @@ $JAVA_HOME/jstat -gcutil $ranger_admin_pid 1000 7 >> $LOG_DIR/jstat.out
 # TOP Output
 top -b -n 3 -d 15 >> $LOG_DIR/top_out
 
+#Collect Ranger configs
+mkdir -p $LOG_DIR/ranger_configs/admin
+mkdir -p $LOG_DIR/ranger_configs/usersync
+cp /etc/ranger/admin/conf/* $LOG_DIR/ranger_configs/admin
+cp /etc/ranger/usersync/conf/* $LOG_DIR/ranger_configs/usersync
+
+
 tar cf /tmp/${LOG_DIR}.tar /tmp/${LOG_DIR}
 gzip /tmp/${LOG_DIR}.tar
 
 
-echo "Please sent /tmp/${LOG_DIR}.tar.gz to Hortonworks"
+echo "Please send /tmp/${LOG_DIR}.tar.gz to Hortonworks"
