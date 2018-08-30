@@ -17,6 +17,7 @@ Ambari_URL = "http://" + AMBARI_HOST + ":8080/api/v1/clusters/" + CLUSTER_NAME +
 user = AMBARI_USER
 password = AMBARI_PASSWD
 
+
 #def request_url (URL):
 #    response = urllib2.Request(URL)
 #    base64string = base64.b64encode('%s:%s' % (user, password))
