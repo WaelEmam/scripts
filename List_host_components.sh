@@ -10,19 +10,19 @@ read -s AMBARI_PASSWD
 
 # Get all Services
 #mkdir tmp
-cp /dev/null tmp/test
+cp /dev/null tmp/host_components
 curl -u $AMBARI_USER:$AMBARI_PASSWD -H "X-Requested-By: admin" -X GET http://$AMBARI_HOST:$PORT/api/v1/clusters/$CLUSER_NAME/services/| grep "service_name"| awk -F: '{print $2}'| awk -F\" '{print $2}' > tmp/services
 
-while read y
+while read services
 do
-    curl -u $AMBARI_USER:$AMBARI_PASSWD -H "X-Requested-By: admin" -X GET http://$AMBARI_HOST:$PORT/api/v1/clusters/$CLUSER_NAME/services/${y}/components | grep component_name| awk -F: '{print $2}'| awk -F\" '{print $2}' > tmp/${y}_components
+    curl -u $AMBARI_USER:$AMBARI_PASSWD -H "X-Requested-By: admin" -X GET http://$AMBARI_HOST:$PORT/api/v1/clusters/$CLUSER_NAME/services/${services}/components | grep component_name| awk -F: '{print $2}'| awk -F\" '{print $2}' > tmp/${services}_components
 
-    while read x
+    while read components
         do
-        echo ${y}_${x} >> tmp/test
+        echo ${services}_${components} >> tmp/host_components
         echo "===========" >> tmp/test
-        curl -u $AMBARI_USER:$AMBARI_PASSWD -H "X-Requested-By: admin" -X GET http://$AMBARI_HOST:$PORT/api/v1/clusters/$CLUSER_NAME/services/${y}/components/${x}?fields=host_components/HostRoles/host_name| grep "host_name"| grep -v "href"| awk -F: '{print $2}'| awk -F\" '{print $2}'>> tmp/test
-        echo " " >>tmp/test
-    done < tmp/${y}_components
+        curl -u $AMBARI_USER:$AMBARI_PASSWD -H "X-Requested-By: admin" -X GET http://$AMBARI_HOST:$PORT/api/v1/clusters/$CLUSER_NAME/services/${services}/components/${components}?fields=host_components/HostRoles/host_name| grep "host_name"| grep -v "href"| awk -F: '{print $2}'| awk -F\" '{print $2}'>> tmp/host_components
+        echo " " >>tmp/host_components
+    done < tmp/${services}_components
 done < tmp/services
 
