@@ -1,5 +1,6 @@
 #!/bin/bash
-set -x
+#set -x
+#
 echo "Enter cluster name:"
 read cluster
 echo "An IP address from the cluster:"
