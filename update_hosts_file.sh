@@ -12,4 +12,5 @@ ssh -t root@${IP} "grep $cluster /etc/hosts" > ${cluster}_hosts
 #echo "" | sudo tee -a /etc/hosts > /dev/null
 echo "# ${cluster} Hosts" | sudo tee -a  /etc/hosts
 cat ${cluster}_hosts | sudo tee -a  /etc/hosts
+echo "#" | sudo tee -a  /etc/hosts
 rm -f ${cluster}_hosts
