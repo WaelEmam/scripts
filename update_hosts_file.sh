@@ -5,6 +5,7 @@ echo "Enter cluster name:"
 read cluster
 echo "An IP address from the cluster:"
 read IP
+ssh-keygen -R ${IP}
 echo "We use sudo, so you might be asked for your computer password"
 sudo sed -i '' "/${cluster}/d" /etc/hosts
 echo "Enter remote server root password"
